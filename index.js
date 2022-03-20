@@ -43,10 +43,15 @@ client.on('messageCreate', async message => {
     if (!message.content.startsWith("cdr.moveMsg")) return
     if (!message.member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return
     if (message.type !== "REPLY") {
-        message.reply({ content: "I'm sorry but you'll have to reply to a message for me to move it!", ephemeral: true })
+        message.reply({ content: "I'm sorry but you'll have to reply to a message for me to move it!" })
         return
     }
     const chans = await message.guild.channels.fetch()
+
+    if (chans.size <= 0) {
+        await message.reply("Sorry I can't see any channels.")
+        return
+    }
 
     const row = new MessageActionRow()
         .addComponents(
@@ -61,7 +66,7 @@ client.on('messageCreate', async message => {
                 )))
         )
 
-    await message.reply({ content: "Move message to...", ephemeral: true, components: [row] })
+    await message.reply({ content: "Move message to...", components: [row] })
 })
 
 client.on('interactionCreate', async interaction => {
