@@ -79,6 +79,11 @@ client.on('interactionCreate', async interaction => {
         }
         const chans = await interaction.guild.channels.fetch()
 
+        if (chans.size <= 0) {
+            await message.reply("Sorry I can't see any channels.")
+            return
+        }
+
         const row = new MessageActionRow()
             .addComponents(
                 new MessageSelectMenu()
